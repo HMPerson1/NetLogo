@@ -30,11 +30,9 @@ extends AgentSet(kind, printName) {
 
   // Assumes we've already checked that the counts are equal. - ST 7/6/06
   override def containsSameAgents(otherSet: api.AgentSet): Boolean = {
-    val iter = otherSet.agents.iterator
-    while (iter.hasNext)
-      if (!contains(iter.next().asInstanceOf[Agent]))
-        return false
-    true
+    import scala.collection.JavaConverters._
+    val set = agents.asScala.toSet
+    otherSet.agents.asScala.forall(set.contains)
   }
 
   def getAgent(id: AnyRef): Agent =
